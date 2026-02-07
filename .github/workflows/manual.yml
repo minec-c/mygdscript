@@ -1,0 +1,63 @@
+name: Build Godot 2.1.6 HTML
+
+on:
+  workflow_dispatch:
+    inputs:
+      script_name:
+        description: "GDScript file to build"
+        required: true
+        default: "thisgdscript.gd"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Godot 2.1.6
+        uses: actions/cache@v3
+        with:
+          path: |
+            godot2
+            ~/.local/share/godot/templates/2.1.6.stable
+          key: godot-2.1.6
+
+      - name: Download Godot 2.1.6
+        run: |
+          if [ ! -f godot2/Godot_v2.1.6-stable_linux_headless.64 ]; then
+            mkdir -p godot2
+            wget https://downloads.tuxfamily.org/godotengine/2.1.6/Godot_v2.1.6-stable_linux_headless.64.zip
+            unzip Godot_v2.1.6-stable_linux_headless.64.zip -d godot2
+            chmod +x godot2/Godot_v2.1.6-stable_linux_headless.64
+          fi
+
+      - name: Download Godot 2.1.6 export templates
+        run: |
+          if [ ! -d ~/.local/share/godot/templates/2.1.6.stable ]; then
+            wget https://downloads.tuxfamily.org/godotengine/2.1.6/Godot_v2.1.6-stable_export_templates.tpz
+            mkdir -p ~/.local/share/godot/templates/2.1.6.stable
+            unzip Godot_v2.1.6-stable_export_templates.tpz -d ~/.local/share/godot/templates/2.1.6.stable
+          fi
+
+      - name: Inject user script
+        run: |
+          cp user_scripts/${{ github.event.inputs.script_name }} template/user_scripts/thisgdscript.gd
+
+      - name: Export HTML
+        run: |
+          cd template
+          ../godot2/Godot_v2.1.6-stable_linux_headless.64 \
+            --export "HTML5" ../build/index.html
+
+      - name: Commit build output
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add build/
+          git commit -m "Auto-build Godot 2.1.6 HTML export" || echo "No changes"
+          git push
