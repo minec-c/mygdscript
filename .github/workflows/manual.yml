@@ -63,7 +63,12 @@ jobs:
         run: |
           echo "=== export_presets.cfg ==="
           cat template/export_presets.cfg || echo "MISSING"
-
+          
+      - name: Verify project loads
+        run: |
+          cd template
+          ../godot2/Godot_v2.1.6-stable_x11.64 --path . -q
+        
       - name: Export HTML
         run: |
           cd template
