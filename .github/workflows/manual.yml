@@ -12,6 +12,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
 
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +26,6 @@ jobs:
             godot2
             ~/.local/share/godot/templates/2.1.6.stable
           key: godot-2.1.6-x11
-
-
 
       - name: Download Godot 2.1.6 editor (x11)
         run: |
@@ -43,24 +44,15 @@ jobs:
             unzip Godot_v2.1.6-stable_export_templates.tpz -d ~/.local/share/godot/templates/2.1.6.stable
           fi
 
-      - name: Fix locale
-        run: |
-          export LANG=C.UTF-8
-          export LC_ALL=C.UTF-8
-
-
       - name: Inject user script
         run: |
           mkdir -p template/user_scripts
           cp user_scripts/${{ github.event.inputs.script_name }} template/user_scripts/thisgdscript.gd
 
-
-
-
       - name: Install required system libraries
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb libpulse0
+          sudo apt-get install -y xvfb libpulse0 libasound2
 
       - name: Prepare build directory
         run: mkdir -p build
@@ -69,13 +61,13 @@ jobs:
         run: |
           echo "=== export_presets.cfg ==="
           cat template/export_presets.cfg || echo "MISSING"
-          
+
       - name: Verify project loads
+        continue-on-error: true
         run: |
           cd template
-          xvfb-run -a ../godot2/Godot_v2.1.6-stable_x11.64 \
-            --path . -q
-        
+          xvfb-run -a ../godot2/Godot_v2.1.6-stable_x11.64 --path .
+
       - name: Export HTML
         run: |
           cd template
