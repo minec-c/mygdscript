@@ -1,4 +1,4 @@
-name: Build Godot 2.1.6 HTML
+name: Build Godot try1 HTML
 
 on:
   workflow_dispatch:
