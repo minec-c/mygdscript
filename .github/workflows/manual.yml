@@ -1,5 +1,3 @@
-name: Build Godot try1 HTML
-
 on:
   workflow_dispatch:
     inputs:
@@ -13,7 +11,6 @@ permissions:
 
 jobs:
   build:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
 
     steps:
@@ -25,21 +22,24 @@ jobs:
           path: |
             godot2
             ~/.local/share/godot/templates/2.1.6.stable
-          key: godot-2.1.6
+          key: godot-2.1.6-x11
 
-      - name: Download Godot 2.1.6
+      - name: Install Xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Download Godot 2.1.6 editor (x11)
         run: |
-          if [ ! -f godot2/Godot_v2.1.6-stable_linux_headless.64 ]; then
+          if [ ! -f godot2/Godot_v2.1.6-stable_x11.64 ]; then
             mkdir -p godot2
-            wget https://downloads.tuxfamily.org/godotengine/2.1.6/Godot_v2.1.6-stable_linux_headless.64.zip
-            unzip Godot_v2.1.6-stable_linux_headless.64.zip -d godot2
-            chmod +x godot2/Godot_v2.1.6-stable_linux_headless.64
+            wget https://absinthe.tuxfamily.org/godotengine/2.1.6/Godot_v2.1.6-stable_x11.64.zip
+            unzip Godot_v2.1.6-stable_x11.64.zip -d godot2
+            chmod +x godot2/Godot_v2.1.6-stable_x11.64
           fi
 
       - name: Download Godot 2.1.6 export templates
         run: |
           if [ ! -d ~/.local/share/godot/templates/2.1.6.stable ]; then
-            wget https://downloads.tuxfamily.org/godotengine/2.1.6/Godot_v2.1.6-stable_export_templates.tpz
+            wget https://absinthe.tuxfamily.org/godotengine/2.1.6/Godot_v2.1.6-stable_export_templates.tpz
             mkdir -p ~/.local/share/godot/templates/2.1.6.stable
             unzip Godot_v2.1.6-stable_export_templates.tpz -d ~/.local/share/godot/templates/2.1.6.stable
           fi
@@ -51,7 +51,7 @@ jobs:
       - name: Export HTML
         run: |
           cd template
-          ../godot2/Godot_v2.1.6-stable_linux_headless.64 \
+          xvfb-run -a ../godot2/Godot_v2.1.6-stable_x11.64 \
             --export "HTML5" ../build/index.html
 
       - name: Commit build output
