@@ -56,7 +56,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb libpulse0 libpulse-mainloop-glib0
 
-
+      - name: Prepare build directory
+        run: mkdir -p build
 
       - name: Export HTML
         run: |
@@ -68,6 +69,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add build/
+          git add build || echo "No build output"
           git commit -m "Auto-build Godot 2.1.6 HTML export" || echo "No changes"
           git push
