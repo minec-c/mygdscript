@@ -59,6 +59,11 @@ jobs:
       - name: Prepare build directory
         run: mkdir -p build
 
+      - name: Debug export preset
+        run: |
+          echo "=== export_presets.cfg ==="
+          cat template/export_presets.cfg || echo "MISSING"
+
       - name: Export HTML
         run: |
           cd template
