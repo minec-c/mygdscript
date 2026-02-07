@@ -68,6 +68,7 @@ jobs:
         run: |
           cd template
           xvfb-run -a ../godot2/Godot_v2.1.6-stable_x11.64 \
+            --path . \
             --export "HTML5" ../build/index.html
 
       - name: Commit build output
