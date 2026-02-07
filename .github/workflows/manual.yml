@@ -43,6 +43,12 @@ jobs:
             unzip Godot_v2.1.6-stable_export_templates.tpz -d ~/.local/share/godot/templates/2.1.6.stable
           fi
 
+      - name: Fix locale
+        run: |
+          export LANG=C.UTF-8
+          export LC_ALL=C.UTF-8
+
+
       - name: Inject user script
         run: |
           mkdir -p template/user_scripts
@@ -67,7 +73,8 @@ jobs:
       - name: Verify project loads
         run: |
           cd template
-          ../godot2/Godot_v2.1.6-stable_x11.64 --path . -q
+          xvfb-run -a ../godot2/Godot_v2.1.6-stable_x11.64 \
+            --path . -q
         
       - name: Export HTML
         run: |
