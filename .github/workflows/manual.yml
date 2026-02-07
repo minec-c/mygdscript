@@ -24,8 +24,7 @@ jobs:
             ~/.local/share/godot/templates/2.1.6.stable
           key: godot-2.1.6-x11
 
-      - name: Install Xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
+
 
       - name: Download Godot 2.1.6 editor (x11)
         run: |
@@ -48,6 +47,16 @@ jobs:
         run: |
           mkdir -p template/user_scripts
           cp user_scripts/${{ github.event.inputs.script_name }} template/user_scripts/thisgdscript.gd
+
+
+
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libpulse0 libpulse-mainloop-glib0
+
+
 
       - name: Export HTML
         run: |
