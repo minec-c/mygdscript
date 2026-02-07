@@ -52,7 +52,16 @@ jobs:
       - name: Install required system libraries
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb libpulse0 libasound2
+          sudo apt-get install -y \
+            xvfb \
+            libpulse0 \
+            libasound2t64 \
+            libx11-6 \
+            libxrandr2 \
+            libxinerama1 \
+            libxcursor1 \
+            libxi6 \
+            libgl1
 
       - name: Prepare build directory
         run: mkdir -p build
