@@ -51,10 +51,10 @@ jobs:
 
 
 
-      - name: Install minimal dependencies
+      - name: Install required system libraries
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb
+          sudo apt-get install -y xvfb libpulse0
 
       - name: Prepare build directory
         run: mkdir -p build
