@@ -46,6 +46,7 @@ jobs:
 
       - name: Inject user script
         run: |
+          mkdir -p template/user_scripts
           cp user_scripts/${{ github.event.inputs.script_name }} template/user_scripts/thisgdscript.gd
 
       - name: Export HTML
