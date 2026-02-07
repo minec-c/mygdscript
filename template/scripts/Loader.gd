@@ -1,6 +1,6 @@
 extends Node2D
 
-func _ready():
+#func _ready():
 #	var path = "res://user_scripts/thisgdscript.gd"
 #	var f = File.new()
 #	if f.file_exists(path):
