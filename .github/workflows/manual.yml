@@ -1,10 +1,5 @@
 on:
   workflow_dispatch:
-    inputs:
-      script_name:
-        description: "GDScript file to build"
-        required: true
-        default: "thisgdscript.gd"
 
 permissions:
   contents: write
