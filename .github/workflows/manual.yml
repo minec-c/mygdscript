@@ -67,7 +67,7 @@ jobs:
         continue-on-error: true
         run: |
           cd template
-          xvfb-run -a ../godot2/Godot_v2.1.6-stable_x11.64 --path .
+          xvfb-run -a ../godot2/Godot_v2.1.6-stable_x11.64 --path . -q
 
       - name: Export HTML
         run: |
