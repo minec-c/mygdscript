@@ -44,10 +44,7 @@ jobs:
             unzip Godot_v2.1.6-stable_export_templates.tpz -d ~/.local/share/godot/templates/2.1.6.stable
           fi
 
-      - name: Inject user script
-        run: |
-          mkdir -p template/user_scripts
-          cp user_scripts/${{ github.event.inputs.script_name }} template/user_scripts/thisgdscript.gd
+ 
 
       - name: Install required system libraries
         run: |
