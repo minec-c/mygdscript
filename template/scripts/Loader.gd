@@ -1,18 +1,5 @@
 extends Node2D
-
-#func _ready():
-#	var path = "res://user_scripts/thisgdscript.gd"
-#	var f = File.new()
-#	if f.file_exists(path):
-#		var s = load(path)
-#		set_script(s)
-#	else:
-#		print("User script nof found")
-
-# FORCE Godot to register the script at export time
-const UserScript = preload("res://user_scripts/thisgdscript.gd")
-
+var label = Label.new()
 func _ready():
-	var instance = UserScript.new()
-	if instance.has_method("run"):
-		instance.run(self)
+        add_child(label)
+        label.set_text("Label was created successful")
